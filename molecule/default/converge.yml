@@ -1,5 +1,15 @@
 ---
 - name: Converge
   hosts: all
+  vars:
+    iface_name: adm
+    # domain_name: hub.genlab.vpn
+    # ipv4_wan: 1.2.3.4
+    ipv4_vpn_addr: 10.0.0.254
+    ipv4_vpn_cidr: 24
+    wg_port: 51820
+    wg_pkey: gABk6e/n3UDgudEVlUrEVcVdn0tc0YVDeCASsI10QFA=
+    # wg_pubkey: def
+
   roles:
-    - role: genlab.template
+    - role: genlab.wg_hub

@@ -1,4 +1,28 @@
 ---
-- name: "Mock task"
-  ansible.builtin.debug:
-    msg: "hello, world!"
+#     peer: "{{ peers | selectattr('username', 'eq', peer_name) | first }}"
+
+- name: "Install wireguard system-wide ({{ iface_name }})"
+  ansible.builtin.apt:
+    name: wireguard
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: "Create the Hub configuration file ({{ iface_name }})"
+  no_log: true
+  notify: "Run the Wireguard service"
+  ansible.builtin.blockinfile:
+    path: "/etc/wireguard/{{ iface_name | replace('-', '_') }}.conf"  # guard again dashes that are not permitted
+    create: true
+    owner: root
+    group: root
+    mode: "0600"
+    state: present
+    block: |
+      [Interface]
+      Address = {{ ipv4_vpn_addr }}/{{ ipv4_vpn_cidr }}
+      ListenPort = {{ wg_port }}
+      PrivateKey = {{ wg_pkey }}
+
+      PreUp = sysctl -w net.ipv4.ip_forward=1
+      PostDown = sysctl -w net.ipv4.ip_forward=0
