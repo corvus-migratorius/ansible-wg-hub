@@ -37,8 +37,10 @@
     owner: root
     group: root
     mode: "0600"
-    marker: "# SPOKE_BLOCK"
+    marker: "# {mark} ANSIBLE MANAGED SPOKE BLOCK: {{ item.domain_name }}"
     block: |
+      #
       [Peer]  # {{ item.domain_name }}
       PublicKey = {{ item.wg_pubkey }}
       AllowedIPs = {{ item.ipv4_vpn_addr }}/32
+      #
