@@ -9,10 +9,10 @@
     cache_valid_time: 3600
 
 - name: "Create the Hub configuration file"
-  no_log: true
+  no_log: "{{ hide_secrets }}"
   notify: "Run the Wireguard service"
   ansible.builtin.blockinfile:
-    path: "/etc/wireguard/{{ iface_name | replace('-', '_') }}.conf"  # guard again dashes that are not permitted
+    path: "/etc/wireguard/{{ iface_name | replace('-', '_') }}.conf"  # Wg does not permit dashes
     create: true
     owner: root
     group: root
@@ -27,9 +27,8 @@
       PreUp = sysctl -w net.ipv4.ip_forward=1
       PostDown = sysctl -w net.ipv4.ip_forward=0
 
-- name: Create [Peer] sections in the Hub configuration file"
-  # no_log: true
-  no_log: "{{ logging }}"
+- name: "Add [Peer] sections to the Hub configuration file"
+  no_log: "{{ hide_secrets }}"
   notify: "Run the Wireguard service"
   loop: "{{ peers }}"
   ansible.builtin.blockinfile:

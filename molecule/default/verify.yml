@@ -12,7 +12,7 @@
     wg_port: 51820
     wg_pkey: gABk6e/n3UDgudEVlUrEVcVdn0tc0YVDeCASsI10QFA=
     wg_pubkey: EvcoZ21/p0AHz5y95jwjVIR9puljc2kXqh/f3U1A4nk=
-    logging: true
+    hide_secrets: false
     peers:
       - domain_name: alpha.genlab.vpn
         ipv4_vpn_addr: 10.0.0.1
