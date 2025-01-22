@@ -5,7 +5,6 @@
   any_errors_fatal: true
   vars:
     iface_name: adm
-    # domain_name: hub.genlab.vpn
     # ipv4_wan: 1.2.3.4
     ipv4_vpn_addr: 10.0.0.254
     ipv4_vpn_cidr: 24
@@ -14,10 +13,10 @@
     wg_pubkey: EvcoZ21/p0AHz5y95jwjVIR9puljc2kXqh/f3U1A4nk=
     hide_secrets: false
     peers:
-      - domain_name: alpha.genlab.vpn
+      - host_id: alpha
         ipv4_vpn_addr: 10.0.0.1
         wg_pubkey: LfEJgNiJ05nx4nWB0Pj3wS3WRyFq567fsdDh4XZqRF0=
-      - domain_name: beta.genlab.vpn
+      - host_id: beta
         ipv4_vpn_addr: 10.0.0.2
         wg_pubkey: oq3Fcwwfxsi5f5UHcZKtxMwQ2aSeHOUe3r35soUUYzU=
 

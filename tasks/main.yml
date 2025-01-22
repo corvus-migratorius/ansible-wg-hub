@@ -1,6 +1,4 @@
 ---
-#     peer: "{{ peers | selectattr('username', 'eq', peer_name) | first }}"
-
 - name: "Install wireguard system-wide"
   ansible.builtin.apt:
     name: wireguard
@@ -8,11 +6,16 @@
     update_cache: true
     cache_valid_time: 3600
 
+- name: "Ensure no dashes in the interface name"
+  when: "'-' in iface_name"
+  ansible.builtin.fail:
+    msg: "The interface name must not contain dashes, got: '{{ iface_name }}'"
+
 - name: "Create the Hub configuration file"
   no_log: "{{ hide_secrets }}"
   notify: "Run the Wireguard service"
   ansible.builtin.blockinfile:
-    path: "/etc/wireguard/{{ iface_name | replace('-', '_') }}.conf"  # Wg does not permit dashes
+    path: "/etc/wireguard/{{ iface_name }}.conf"  # Wg does not permit dashes
     create: true
     owner: root
     group: root
@@ -32,14 +35,14 @@
   notify: "Run the Wireguard service"
   loop: "{{ peers }}"
   ansible.builtin.blockinfile:
-    path: "/etc/wireguard/{{ iface_name | replace('-', '_') }}.conf"  # Wg does not permit dashes
+    path: "/etc/wireguard/{{ iface_name }}.conf"  # Wg does not permit dashes
     owner: root
     group: root
     mode: "0600"
-    marker: "# {mark} ANSIBLE MANAGED SPOKE BLOCK: {{ item.domain_name }}"
+    marker: "# {mark} ANSIBLE MANAGED SPOKE BLOCK: {{ item.host_id }}.{{ iface_name }}.vpn"
     block: |
       #
-      [Peer]  # {{ item.domain_name }}
+      [Peer]  # {{ item.host_id }}
       PublicKey = {{ item.wg_pubkey }}
       AllowedIPs = {{ item.ipv4_vpn_addr }}/32
       #
