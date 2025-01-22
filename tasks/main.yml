@@ -41,7 +41,7 @@
     owner: root
     group: root
     mode: "0600"
-    marker: "# {mark} ANSIBLE MANAGED SPOKE BLOCK: {{ domain_name  }}"
+    marker: "# {mark} ANSIBLE MANAGED SPOKE BLOCK: {{ domain_name }}"
     block: |
       #
       [Peer]  # {{ domain_name }}
