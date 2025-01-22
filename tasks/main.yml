@@ -1,14 +1,14 @@
 ---
 #     peer: "{{ peers | selectattr('username', 'eq', peer_name) | first }}"
 
-- name: "Install wireguard system-wide ({{ iface_name }})"
+- name: "Install wireguard system-wide"
   ansible.builtin.apt:
     name: wireguard
     state: present
     update_cache: true
     cache_valid_time: 3600
 
-- name: "Create the Hub configuration file ({{ iface_name }})"
+- name: "Create the Hub configuration file"
   no_log: true
   notify: "Run the Wireguard service"
   ansible.builtin.blockinfile:
@@ -26,3 +26,19 @@
 
       PreUp = sysctl -w net.ipv4.ip_forward=1
       PostDown = sysctl -w net.ipv4.ip_forward=0
+
+- name: Create [Peer] sections in the Hub configuration file"
+  # no_log: true
+  no_log: "{{ logging }}"
+  notify: "Run the Wireguard service"
+  loop: "{{ peers }}"
+  ansible.builtin.blockinfile:
+    path: "/etc/wireguard/{{ iface_name | replace('-', '_') }}.conf"  # Wg does not permit dashes
+    owner: root
+    group: root
+    mode: "0600"
+    marker: "# SPOKE_BLOCK"
+    block: |
+      [Peer]  # {{ item.domain_name }}
+      PublicKey = {{ item.wg_pubkey }}
+      AllowedIPs = {{ item.ipv4_vpn_addr }}/32
