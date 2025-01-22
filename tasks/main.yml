@@ -15,7 +15,7 @@
   no_log: "{{ hide_secrets }}"
   notify: "Run the Wireguard service"
   ansible.builtin.blockinfile:
-    path: "/etc/wireguard/{{ iface_name }}.conf"  # Wg does not permit dashes
+    path: "/etc/wireguard/{{ iface_name }}.conf"
     create: true
     owner: root
     group: root
@@ -34,15 +34,17 @@
   no_log: "{{ hide_secrets }}"
   notify: "Run the Wireguard service"
   loop: "{{ peers }}"
+  vars:
+    domain_name: "{{ item.host_id }}.{{ iface_name }}.vpn"
   ansible.builtin.blockinfile:
-    path: "/etc/wireguard/{{ iface_name }}.conf"  # Wg does not permit dashes
+    path: "/etc/wireguard/{{ iface_name }}.conf"
     owner: root
     group: root
     mode: "0600"
-    marker: "# {mark} ANSIBLE MANAGED SPOKE BLOCK: {{ item.host_id }}.{{ iface_name }}.vpn"
+    marker: "# {mark} ANSIBLE MANAGED SPOKE BLOCK: {{ domain_name  }}"
     block: |
       #
-      [Peer]  # {{ item.host_id }}
+      [Peer]  # {{ domain_name }}
       PublicKey = {{ item.wg_pubkey }}
       AllowedIPs = {{ item.ipv4_vpn_addr }}/32
       #
