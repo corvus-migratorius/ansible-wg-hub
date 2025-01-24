@@ -23,7 +23,7 @@
     state: present
     block: |
       [Interface]
-      Address = {{ ipv4_vpn_addr }}/{{ ipv4_vpn_cidr }}
+      Address = {{ ipv4_vpn_addr }}/32
       ListenPort = {{ wg_port }}
       PrivateKey = {{ wg_pkey }}
 
