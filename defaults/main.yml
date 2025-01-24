@@ -1,1 +1,7 @@
 ---
+iface_name: wg0
+host_id: hub
+ipv4_vpn_addr: 10.0.0.254
+ipv4_vpn_cidr: 24
+wg_port: 51820
+hide_secrets: true
