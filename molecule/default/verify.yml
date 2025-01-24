@@ -5,23 +5,9 @@
   any_errors_fatal: true
   vars:
     iface_name: adm
-    # ipv4_wan: 1.2.3.4
-    ipv4_vpn_addr: 10.0.0.254
-    ipv4_vpn_cidr: 24
-    wg_port: 51820
-    wg_pkey: gABk6e/n3UDgudEVlUrEVcVdn0tc0YVDeCASsI10QFA=
-    wg_pubkey: EvcoZ21/p0AHz5y95jwjVIR9puljc2kXqh/f3U1A4nk=
-    hide_secrets: false
-    peers:
-      - host_id: alpha
-        ipv4_vpn_addr: 10.0.0.1
-        wg_pubkey: LfEJgNiJ05nx4nWB0Pj3wS3WRyFq567fsdDh4XZqRF0=
-      - host_id: beta
-        ipv4_vpn_addr: 10.0.0.2
-        wg_pubkey: oq3Fcwwfxsi5f5UHcZKtxMwQ2aSeHOUe3r35soUUYzU=
 
   tasks:
-    - name: "Check the Wireguard service is running"
+    - name: "Check that the Wireguard service is running"
       ansible.builtin.service:
-        name: wg-quick@{{ iface_name | replace("-", "_") }}
+        name: wg-quick@{{ iface_name }}
         state: started

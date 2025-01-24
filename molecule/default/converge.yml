@@ -3,7 +3,6 @@
   hosts: all
   vars:
     iface_name: adm
-    # ipv4_wan: 1.2.3.4
     ipv4_vpn_addr: 10.0.0.254
     ipv4_vpn_cidr: 24
     wg_port: 51820
