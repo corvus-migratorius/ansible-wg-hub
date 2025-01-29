@@ -49,5 +49,6 @@
       #
       [Peer]  # {{ domain_name }}
       PublicKey = {{ item.wg_pubkey }}
+      PresharedKey = {{ item.wg_psk }}
       AllowedIPs = {{ item.ipv4_vpn_addr }}/32
       #

@@ -18,6 +18,7 @@ jobs:
       matrix:
         distro:
           - ubuntu2404
+          - ubuntu2204
 
     steps:
       - uses: actions/checkout@v4
