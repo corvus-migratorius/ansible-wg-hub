@@ -26,7 +26,6 @@
       Address = {{ ipv4_vpn_addr }}/32
       ListenPort = {{ wg_port }}
       PrivateKey = {{ wg_pkey }}
-      PresharedKey = {{ wg_psk }}
 
       PreUp = sysctl -w net.ipv4.ip_forward=1
       {% if dns_server is defined %}
@@ -50,5 +49,6 @@
       #
       [Peer]  # {{ domain_name }}
       PublicKey = {{ item.wg_pubkey }}
+      PresharedKey = {{ item.wg_psk }}
       AllowedIPs = {{ item.ipv4_vpn_addr }}/32
       #
